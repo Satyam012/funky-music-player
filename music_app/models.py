@@ -13,7 +13,7 @@ class album(models.Model):
     album_added = models.DateTimeField(auto_now_add=True)
     age = models.IntegerField()
     def __str__(self):
-        return self.name + "-" +self.category.category_name 
+        return self.name + "-" + self.category.category_name 
 class song(models.Model):
     song_album = models.ForeignKey(album,related_name="song_album",on_delete=models.PROTECT)
     is_visible = models.BooleanField(default=False)#if is_visible == False then show as requested song. If admin accepts is_visible= True, and not a part of requested from last condition.If deleted then no question of song object

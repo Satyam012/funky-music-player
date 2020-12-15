@@ -46,10 +46,9 @@
           {% if user.is_authenticated %}
           <a  href="/logout/"> LOGOUT </a></li>
             {% else %}
-        <a  href="/login//"> LOGIN </a></li>
-        {% endif %}
-       <li> <a  href="/admin/"> ADMIN </a></li>
-
+          <a  href="/"> LOGIN </a></li>
+          {% endif %}
+          <li> <a  href="/admin/"> ADMIN </a></li>
           </ul>
           </nav>
     {% block body %}
