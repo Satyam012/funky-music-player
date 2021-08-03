@@ -5,27 +5,26 @@ from django.contrib.auth.decorators import login_required#beat-master
 from django.contrib.auth.models import User,auth
 from django.contrib import messages
 
-@login_required
 def category(request):
     all_category_objects = albumCategory.objects.all()
     return render(request,'all_categories.html',{'all_category_objects':all_category_objects})
 
-@login_required
 def category_album(request,id):
     requested_category = albumCategory.objects.get(id=id)
     filtered_albums= album.objects.filter(category= requested_category)
     return render(request,'allAlbum.html',{'all_album':filtered_albums})
 
-
-@login_required
 def allsong(request,id):
-    #filtered_songs = None
+    filtered_songs = None
     requested_album = album.objects.get(id=id)
     
     #all_songs=requested_album.song_album.all()
     #filtered_songs = all_songs.filter(is_visisble=True)
-    
+
     if 'addSong' in request.POST :
+        print('exec')
+        print(request.POST)
+        print(request.FILES)
         song_name=  request.POST['song_name']
         song_file = request.FILES['song_file']
         dedicated_by=  request.POST['dedicated_by']
@@ -37,8 +36,6 @@ def allsong(request,id):
         name_song = request.POST['name_song']
         filtered_song = song.objects.filter(song_name__contains = name_song,song_album=requested_album )
     return render(request,'song.html',{'Allsong':filtered_song,'album':requested_album})
-
-@login_required    
 def addCategory(request):#only admin
     if request.user.is_staff:
         if 'add' in request.POST and request.FILES:
@@ -49,8 +46,6 @@ def addCategory(request):#only admin
         return render(request,'categoryAdd.html')   
     else:
         raise Http404("You are not an admin")
-
-@login_required    
 def addAlbum(request):#only admin
     if request.user.is_staff:
         all_category = albumCategory.objects.all()
@@ -99,7 +94,7 @@ def login(request):#copied frm beat-connect master
             messages.add_message(request, messages.INFO, 'Invalid Credential')
             return redirect('/home/')
             #return render(request, 'login.html', {'error_message': "Invalid Credentials"})
-    return render(request, 'login.html')
+    #return render(request, 'login.html')
 def register(request):
     if 'register' in request.POST:
         first_name = request.POST['first_name']
@@ -122,8 +117,6 @@ def register(request):
         else:
             return render(request,'home.html',{'error_message':"Password does not match"})
     return render(request,'home.html')
-
-@login_required    
 def favourite(request,album_id):
     try:
         requested_album = album.objects.get(id=album_id)
